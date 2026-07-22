@@ -1,4 +1,4 @@
-# Backend Calculator - Node.js + Express
+# Calculator Backend - Node.js + Express
 
 A REST API backend for the calculator application built with Node.js and Express.
 
@@ -10,6 +10,7 @@ A REST API backend for the calculator application built with Node.js and Express
 - Calculation history storage
 - Statistics tracking
 - Error handling and validation
+- **Docker ready** with health checks
 
 ## Installation
 
@@ -35,6 +36,18 @@ The server will run on `http://localhost:3000`
 ### Development mode with auto-reload
 ```bash
 npm run dev
+```
+
+## Docker
+
+### Build Docker Image
+```bash
+docker build -f Dockerfile -t calculator-nodejs:latest .
+```
+
+### Run Docker Container
+```bash
+docker run -p 3000:3000 calculator-nodejs:latest
 ```
 
 ## API Endpoints
@@ -68,76 +81,15 @@ Performs a calculation operation.
 
 Retrieve all calculations from history.
 
-**Response:**
-```json
-{
-  "count": 2,
-  "history": [
-    {
-      "operand1": 10,
-      "operation": "+",
-      "operand2": 5,
-      "result": 15,
-      "timestamp": "2024-01-15T10:30:00Z"
-    },
-    {
-      "operand1": 20,
-      "operation": "-",
-      "operand2": 3,
-      "result": 17,
-      "timestamp": "2024-01-15T10:31:00Z"
-    }
-  ]
-}
-```
-
 ### 3. Clear History
 **DELETE** `/api/history`
 
 Clear all calculation history.
 
-**Response:**
-```json
-{
-  "message": "History cleared"
-}
-```
-
 ### 4. Get Statistics
 **GET** `/api/stats`
 
-Get statistics about calculations performed.
-
-**Response:**
-```json
-{
-  "totalCalculations": 5,
-  "operationCounts": {
-    "+": 2,
-    "-": 1,
-    "*": 1,
-    "/": 1
-  }
-}
-```
-
-## Example Usage with cURL
-
-```bash
-# Calculate 10 + 5
-curl -X POST http://localhost:3000/api/calculate \
-  -H "Content-Type: application/json" \
-  -d '{"operand1": 10, "operation": "+", "operand2": 5}'
-
-# Get history
-curl http://localhost:3000/api/history
-
-# Get statistics
-curl http://localhost:3000/api/stats
-
-# Clear history
-curl -X DELETE http://localhost:3000/api/history
-```
+Get calculation statistics.
 
 ## Project Structure
 
@@ -145,6 +97,7 @@ curl -X DELETE http://localhost:3000/api/history
 backend-nodejs/
 ├── server.js          # Main Express server
 ├── package.json       # Dependencies
+├── Dockerfile         # Docker configuration
 └── README.md          # This file
 ```
 
@@ -163,8 +116,6 @@ The API includes validation for:
 - Division by zero
 - Invalid operations
 
-All errors return appropriate HTTP status codes and error messages.
-
 ## Learning Outcomes
 
 - REST API design principles
@@ -173,3 +124,4 @@ All errors return appropriate HTTP status codes and error messages.
 - Data validation
 - CORS configuration
 - Error handling in Node.js
+- Docker containerization

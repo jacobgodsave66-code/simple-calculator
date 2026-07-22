@@ -1,0 +1,30 @@
+# Multi-stage build for optimized frontend image
+# Stage 1: Build stage
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# Copy frontend files
+COPY frontend/ .
+
+# No build step needed for static files, but this stage is here for future expansion
+# (e.g., if using build tools like webpack, babel, etc.)
+
+# Stage 2: Runtime stage
+FROM nginx:alpine
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copy static files from builder
+COPY --from=builder /app /usr/share/nginx/html
+
+# Expose port
+EXPOSE 80
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost/index.html || exit 1
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]

@@ -62,3 +62,17 @@ Calculator Class Methods:
 - Clear visual feedback
 - High contrast colors
 - Readable font sizes
+
+## Docker
+
+### Build Docker Image
+```bash
+docker build -f Dockerfile.frontend -t calculator-frontend:latest .
+```
+
+### Run Docker Container
+```bash
+docker run -p 8080:80 calculator-frontend:latest
+```
+
+Access the calculator at `http://localhost:8080`
